@@ -23,3 +23,8 @@ Valbar komplexitetsnivå på figur och ord
 Egna level ups
 
 Startkod (`hangman-assignment`) hittar ni i detta repo.
+
+## Länk till diagram
+
+https://www.figma.com/file/FJORBAphO9L2GlQBDeKkJw/Untitled?node-id=0%3A1&t=9igv45Yisj9N7SV8-1
+
