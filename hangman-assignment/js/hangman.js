@@ -17,3 +17,26 @@
     .: tidräknare? om vi vill
 
 */
+
+// Lista med ord
+const words = ['Pizzamjöl', 'Tomatsoppa', 'Chorizogryta'];
+
+// Funktion som tar fram ett slumpat index
+function getRandomIndex() {
+    let randomIndex = Math.floor(Math.random() * words.length);
+    return randomIndex;
+}
+
+
+// Hämta ord ur listan words med hjälp av random index
+let index = getRandomIndex();
+let wordToGuess = words[1];
+
+// Hämta ul-elementet i dokumentet
+let ulEl = document.querySelector('.word');
+
+
+for (let i = 0; i < wordToGuess.length; i++) {
+    let liEl = document.createElement('li');
+    
+}
