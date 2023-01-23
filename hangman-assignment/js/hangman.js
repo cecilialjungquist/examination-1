@@ -19,7 +19,7 @@
 */
 
 // Lista med ord
-const words = ['Pizzamjöl', 'Tomatsoppa', 'Chorizogryta'];
+const words = ['pizzamjöl', 'tomatsoppa', 'chorizogryta'];
 
 // Funktion som tar fram ett slumpat index
 function getRandomIndex() {
@@ -35,8 +35,32 @@ let wordToGuess = words[1];
 // Hämta ul-elementet i dokumentet
 let ulEl = document.querySelector('.word');
 
-
+// Loopa och rendera ut box för varje bokstav i ordet
 for (let i = 0; i < wordToGuess.length; i++) {
     let liEl = document.createElement('li');
+
+    // Addera class för att senare kunna jämföra
+    liEl.classList.add(wordToGuess[i]);
     
+    ulEl.appendChild(liEl);
+
 }
+let correctGuesses = 0;
+
+document.addEventListener('keypress', function(event) {
+    let guessedLetter = event.key;
+
+    for (let i = 0; i < wordToGuess.length; i++) {
+        if(guessedLetter === wordToGuess[i]) {
+            console.log(guessedLetter);
+            correctGuesses++;
+        } else {
+            console.log('nä');
+        }
+    }
+
+    if (correctGuesses === wordToGuess.length) {
+        // Får poäng, omgången slut
+    }
+
+});
