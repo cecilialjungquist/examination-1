@@ -1,10 +1,4 @@
 /**
-     För att toggla SVG:en
-    document.querySelector('figure').classList.add('scaffold')
-    document.querySelector('figure').classList.add('head')
-    document.querySelector('figure').classList.add('body')
-    document.querySelector('figure').classList.add('arms')
-    document.querySelector('figure').classList.add('legs')
 
     Hänga gubbe
     .: Keyboard eventlyssnare
@@ -15,14 +9,46 @@
 
     .: poängräknare 
     .: tidräknare? om vi vill
-    
-    */
+
+    Kvar att göra
+    .: Kolla så att det är en bokstav som skickas in
+    .: Spara poäng över omgångar?
+    .: Ok att samma bokstav ska kunna gissas på flera gånger?
+    .: Fixa rightGuess så den bara gör rätt grej en gång
+    .: Förlänga ordlistan
+    .: Någon typ av timer?
+    .: Clean up
+    .: Måste fixa så att man inte får "correctGuesses++" om man trycker på samma bokstav
+*/
    
-// Lista med ord
+// Lista med ord och ta ut ord
 const words = ['pizzamjöl', 'tomatsoppa', 'chorizogryta'];
+let index = getRandomIndex();
+let wordToGuess = words[index];
 
 let correctGuesses = 0;
+let points = 0;
 let bodyParts = ['scaffold', 'head', 'body', 'arms', 'legs'];
+
+// Hämta ul-elementet och restart button i dokumentet
+let ulEl = document.querySelector('.word');
+let restartBtnList = document.querySelectorAll('.restart-btn');
+
+// Loopa och rendera ut box för varje bokstav i ordet
+for (let i = 0; i < wordToGuess.length; i++) {
+    let liEl = document.createElement('li');
+
+    // ************************************
+    // KAN TA BORT DENNA!!!! Behövs inte då vi inte jämför längre
+    // ************************************
+
+    // Addera class för att senare kunna jämföra
+    // liEl.classList.add(wordToGuess[i]);
+    
+    ulEl.appendChild(liEl);
+}
+
+/** -.-.-.-.- FUNCTIONS -.-.-.-.- */
    
 // Funktion som tar fram ett slumpat index
 function getRandomIndex() {
@@ -32,43 +58,30 @@ function getRandomIndex() {
 
 // Funktion för att jämföra bokstav och rendera UI -- fixa så det bara görs
 // en gång!
-function rightGuess(letter) {
+function rightGuess(letter, placement) {
 
     // Hämta de element med class name guessedLetter
-    let letterList = document.getElementsByClassName(letter);
+    let letterList = document.querySelectorAll('li');
 
-    // Loopa över listan för att skriva ut på skärmen
-    for (let i = 0; i < letterList.length; i++) {
-        letterList[i].innerHTML = letter.toUpperCase();
-    }
+    letterList[placement].innerHTML = letter.toUpperCase();
+
+    // ************************************
+    // KAN TA BORT DENNA!!!! Behövs inte, se ovan
+    // ************************************
+
+    // // Loopa över listan för att skriva ut på skärmen
+    // for (let i = 0; i < letterList.length; i++) {
+    //     letterList[i].innerHTML = letter.toUpperCase();
+    // }
 }
 
 // Funktion för att rendera ut UI vid felgissning
 function wrongGuess() {
-
     document.querySelector('figure').classList.add(bodyParts[0]);
     bodyParts.shift();
 }
 
-// Hämta ord ur listan words med hjälp av random index
-let index = getRandomIndex();
-let wordToGuess = words[1];
-
-// Hämta ul-elementet i dokumentet
-let ulEl = document.querySelector('.word');
-
-// Loopa och rendera ut box för varje bokstav i ordet
-for (let i = 0; i < wordToGuess.length; i++) {
-    let liEl = document.createElement('li');
-
-    // Addera class för att senare kunna jämföra
-    liEl.classList.add(wordToGuess[i]);
-    
-    ulEl.appendChild(liEl);
-
-}
-
-
+/** -.-.-.-.- EVENT LISTENERS -.-.-.-.- */
 
 document.addEventListener('keypress', function(event) {
 
@@ -80,8 +93,7 @@ document.addEventListener('keypress', function(event) {
     for (let i = 0; i < wordToGuess.length; i++) {
         if (guessedLetter === wordToGuess[i]) {
             correctGuesses++;
-                            // addera i argument
-            rightGuess(guessedLetter);
+            rightGuess(guessedLetter, i);
             letterExists = true;
         } 
     }
@@ -92,9 +104,11 @@ document.addEventListener('keypress', function(event) {
     }
 
     if (correctGuesses === wordToGuess.length) {
+        // Ju fler bodyParts kvar i arrayen, ju mer poäng
+        points = bodyParts.length;
         document.querySelector('.winning').classList.add('show');
-        document.querySelector('.winning-word').innerHTML = wordToGuess.toUpperCase();
-        // Får poäng, omgången slut
+        document.querySelector('.points').innerHTML = points;
+        
     } else if (bodyParts.length === 0) {
         document.querySelector('.game-over').classList.add('show');
         document.querySelector('.losing-word').innerHTML = wordToGuess.toUpperCase();
@@ -102,13 +116,8 @@ document.addEventListener('keypress', function(event) {
 
 });
 
-
-let restartBtnList = document.querySelectorAll('.restart-btn');
 restartBtnList.forEach(button => {
     button.addEventListener('click', () => {
         location.reload();
-        
     });
 });
-
-// Funktion 
