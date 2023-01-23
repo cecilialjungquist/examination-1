@@ -78,7 +78,7 @@ p {
     margin: 1rem 0;
 }
 
-
+section.winning,
 section.game-over {
     position: fixed;
     width: 100vw;
@@ -91,22 +91,25 @@ section.game-over {
     align-items: center;
     display: none;
 }
-
+section.winning.show,
 section.game-over.show {
     display: flex;
 }
 
+.winning > h1,
 .game-over > h1 {
     font-size: 6rem;
     margin: 0;
 }
 
+.winning > p,
 .game-over > p {
     font-size: 2rem;
     color: white;
     margin: 0;
 }
 
+.winning > a,
 .game-over > a {
     background: white;
     color: #222;
@@ -117,6 +120,7 @@ section.game-over.show {
     opacity: .8;
 }
 
+.winning > a:hover,
 .game-over > a:hover {
     opacity: 1;
 }

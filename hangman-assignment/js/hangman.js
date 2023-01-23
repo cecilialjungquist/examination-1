@@ -69,7 +69,11 @@ for (let i = 0; i < wordToGuess.length; i++) {
 }
 
 
+
 document.addEventListener('keypress', function(event) {
+
+    // Kolla om det är en bokstav?
+
     let letterExists = false;
     let guessedLetter = event.key;
 
@@ -84,10 +88,27 @@ document.addEventListener('keypress', function(event) {
 
     if (!letterExists) {
         wrongGuess();
+        document.querySelector('.nomatch').innerHTML += event.key;
     }
 
     if (correctGuesses === wordToGuess.length) {
+        document.querySelector('.winning').classList.add('show');
+        document.querySelector('.winning-word').innerHTML = wordToGuess.toUpperCase();
         // Får poäng, omgången slut
+    } else if (bodyParts.length === 0) {
+        document.querySelector('.game-over').classList.add('show');
+        document.querySelector('.losing-word').innerHTML = wordToGuess.toUpperCase();
     }
 
 });
+
+
+let restartBtnList = document.querySelectorAll('.restart-btn');
+restartBtnList.forEach(button => {
+    button.addEventListener('click', () => {
+        location.reload();
+        
+    });
+});
+
+// Funktion 
