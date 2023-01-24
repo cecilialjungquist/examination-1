@@ -1,4 +1,4 @@
-wordsLong = [
+const words = [
     "abakus",
     "abandon",
     "abbé",
