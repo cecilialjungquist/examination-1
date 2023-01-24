@@ -1,31 +1,3 @@
-
-/**
-
-    Hänga gubbe
-    .: Keyboard eventlyssnare
-    .: lista med alfabetet, ta bort för varje gissning och lägg i ny lista som ska renderas
-    .: slumpa ut random ord
-    .: lista med ord
-    .: max antal gissningar vs antal gissningar anv gjort
-
-    .: poängräknare 
-    .: tidräknare? om vi vill
-
-    Kvar att göra
-
-    .: Kolla nya lista, varför undefined? - check
-    .: Kolla så att det är en bokstav som skickas in - prio
-    .: Kolla efter stora bokstäver
-    .: Spara poäng över omgångar?
-    .: Kollar om en bokstav redan är gissad på - check
-    .: Fixa rightGuess så den bara gör rätt grej en gång - check
-    .: Förlänga ordlistan - check
-    .: Någon typ av timer?
-    .: Clean up
-    .: Måste fixa så att man inte får "correctGuesses++" om man trycker på samma bokstav
-*/
-// Lista med ord och ta ut ord
-/* const testWords = ['p-izzamjöl', 'tomatsoppa', 'chori zogryta', 'tangentbord']; */
 let approvedWordList = approvedWords(words);
 let wordToGuess = '';
 
@@ -39,6 +11,7 @@ let rounds = 0;
 let ulEl = document.querySelector('.word');
 let restartBtnList = document.querySelectorAll('.restart-btn');
 
+// Generera startord
 wordToGuess = generateWord();
 
 /* -.-.-.-.- FUNCTIONS -.-.-.-.- */
@@ -62,16 +35,17 @@ function generateWord() {
         let liEl = document.createElement('li');
         ulEl.appendChild(liEl);
     }
-    console.log(word);
+
     return word;
 }
 
-// Funktion som tar bort oanvändbara ord
+// Funktion som tar bort oanvändbara ord ur listan
 function approvedWords(wordList) {
     for (let i = 0; i < wordList.length; i++) {
-        if (wordList[i].indexOf("-") || wordList[i].indexOf(" ")) {
+        if (wordList[i].includes("-") || wordList[i].includes(" ")) {
             wordList.splice(i, 1);
-        }
+        } 
+        wordList[i].toLowerCase();
     }
     return wordList;
 }
@@ -84,7 +58,6 @@ function getRandomIndex() {
 
 // Funktion för att jämföra bokstav och rendera UI 
 function rightGuess(letter, placement) {
-  
     let letterList = document.querySelectorAll('li');
     letterList[placement].innerHTML = letter.toUpperCase();
 }
@@ -102,6 +75,7 @@ document.addEventListener('keypress', function (event) {
     let letterExists = false;
     let guessedLetter = event.key;
 
+    // Om bokstaven inte är gissad på förut
     if (guesses.indexOf(guessedLetter) === -1) {
         for (let i = 0; i < wordToGuess.length; i++) {
             if (guessedLetter === wordToGuess[i]) {
@@ -111,7 +85,6 @@ document.addEventListener('keypress', function (event) {
             }
         }
     } else {
-        alert('Already guessed!')
         letterExists = true;
     }
 
@@ -143,6 +116,5 @@ restartBtnList.forEach(button => {
         document.getElementById('total-points').innerHTML = `Your points: ${points}`;
         rounds++;
         document.getElementById('rounds').innerHTML = `Rounds: ${rounds}`
-
     });
 });
