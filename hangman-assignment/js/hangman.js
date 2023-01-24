@@ -27,26 +27,46 @@
 // Lista med ord och ta ut ord
 /* const testWords = ['p-izzamjöl', 'tomatsoppa', 'chori zogryta', 'tangentbord']; */
 let approvedWordList = approvedWords(words);
-let index = getRandomIndex();
-let wordToGuess = approvedWordList[index];
+let wordToGuess = '';
 
 let correctGuesses = 0;
 let guesses = [];
 let points = 0;
 let bodyParts = ['scaffold', 'head', 'body', 'arms', 'legs'];
+let rounds = 0;
 
 // Hämta ul-elementet och restart button i dokumentet
 let ulEl = document.querySelector('.word');
 let restartBtnList = document.querySelectorAll('.restart-btn');
 
-// Loopa och rendera ut box för varje bokstav i ordet
-for (let i = 0; i < wordToGuess.length; i++) {
-    let liEl = document.createElement('li');
-
-    ulEl.appendChild(liEl);
-}
+wordToGuess = generateWord();
 
 /* -.-.-.-.- FUNCTIONS -.-.-.-.- */
+
+// Funktion som genererar nytt ord och nollställer
+function generateWord() {
+    let index = getRandomIndex();
+    let word = approvedWordList[index];
+    approvedWordList.splice(index,1);
+    correctGuesses = 0;
+    guesses = [];
+    bodyParts = ['scaffold', 'head', 'body', 'arms', 'legs'];
+
+    // Rensar UI
+    document.querySelector('figure').className = '';
+    document.querySelector('.nomatch').innerHTML = '';
+    ulEl.innerHTML = '';
+
+    // Loopa och rendera ut box för varje bokstav i ordet
+    for (let i = 0; i < word.length; i++) {
+        let liEl = document.createElement('li');
+        ulEl.appendChild(liEl);
+    }
+    console.log(word);
+    return word;
+}
+
+// Funktion som tar bort oanvändbara ord
 function approvedWords(wordList) {
     for (let i = 0; i < wordList.length; i++) {
         if (wordList[i].indexOf("-") || wordList[i].indexOf(" ")) {
@@ -64,9 +84,8 @@ function getRandomIndex() {
 
 // Funktion för att jämföra bokstav och rendera UI 
 function rightGuess(letter, placement) {
-    // Hämta de element med class name guessedLetter
+  
     let letterList = document.querySelectorAll('li');
-
     letterList[placement].innerHTML = letter.toUpperCase();
 }
 
@@ -82,45 +101,48 @@ document.addEventListener('keypress', function (event) {
 
     let letterExists = false;
     let guessedLetter = event.key;
-    let letterOrNumber = parseInt(event.key);
 
-    if (letterOrNumber / letterOrNumber != 1 || letterOrNumber === 0) {
-        if (guesses.indexOf(guessedLetter) === -1) {
-            for (let i = 0; i < wordToGuess.length; i++) {
-                if (guessedLetter === wordToGuess[i]) {
-                    correctGuesses++;
-                    rightGuess(guessedLetter, i);
-                    letterExists = true;
-                }
+    if (guesses.indexOf(guessedLetter) === -1) {
+        for (let i = 0; i < wordToGuess.length; i++) {
+            if (guessedLetter === wordToGuess[i]) {
+                correctGuesses++;
+                rightGuess(guessedLetter, i);
+                letterExists = true;
             }
-        } else {
-            alert('Already guessed!')
-            letterExists = true;
         }
+    } else {
+        alert('Already guessed!')
+        letterExists = true;
+    }
 
-        // Lägger till bokstaven i gissningar
-        guesses.push(guessedLetter);
+    // Lägger till bokstaven i gissningar
+    guesses.push(guessedLetter);
 
-        if (!letterExists) {
-            wrongGuess();
-            document.querySelector('.nomatch').innerHTML += event.key;
-        }
+    if (!letterExists) {
+        wrongGuess();
+        document.querySelector('.nomatch').innerHTML += event.key;
+    }
 
-        if (correctGuesses === wordToGuess.length) {
-            // Ju fler bodyParts kvar i arrayen, ju mer poäng
-            points = bodyParts.length;
-            document.querySelector('.winning').classList.add('show');
-            document.querySelector('.points').innerHTML = points;
+    if (correctGuesses === wordToGuess.length) {
+        // Ju fler bodyParts kvar i arrayen, ju mer poäng
+        points += bodyParts.length;
+        document.querySelector('.winning').classList.add('show');
+        document.querySelector('.points').innerHTML = bodyParts.length;
 
-        } else if (bodyParts.length === 0) {
-            document.querySelector('.game-over').classList.add('show');
-            document.querySelector('.losing-word').innerHTML = wordToGuess.toUpperCase();
-        }
-    } else {}
+    } else if (bodyParts.length === 0) {
+        document.querySelector('.game-over').classList.add('show');
+        document.querySelector('.losing-word').innerHTML = wordToGuess.toUpperCase();
+    }
+    
 });
 
 restartBtnList.forEach(button => {
     button.addEventListener('click', () => {
-        location.reload();
+        wordToGuess = generateWord();
+        document.querySelector('.show').classList.remove('show');
+        document.getElementById('total-points').innerHTML = `Your points: ${points}`;
+        rounds++;
+        document.getElementById('rounds').innerHTML = `Rounds: ${rounds}`
+
     });
 });

@@ -78,6 +78,17 @@ p {
     margin: 1rem 0;
 }
 
+#total-points {
+    position: absolute;
+    top: 10%;
+    left: 10%;
+}
+#rounds {
+    position: absolute;
+    top: 13%;
+    left: 10%;
+}
+
 section.winning,
 section.game-over {
     position: fixed;
