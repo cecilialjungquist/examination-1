@@ -1,3 +1,4 @@
+
 /**
 
     Hänga gubbe
@@ -11,9 +12,9 @@
     .: tidräknare? om vi vill
 
     Kvar att göra
-    .: Kolla så att det är en bokstav som skickas in
+    .: Kolla så att det är en bokstav som skickas in - prio
     .: Spara poäng över omgångar?
-    .: Ok att samma bokstav ska kunna gissas på flera gånger?
+    .: Kollar om en bokstav redan är gissad på - check
     .: Fixa rightGuess så den bara gör rätt grej en gång - check
     .: Förlänga ordlistan
     .: Någon typ av timer?
@@ -21,12 +22,14 @@
     .: Måste fixa så att man inte får "correctGuesses++" om man trycker på samma bokstav
 */
    
+
 // Lista med ord och ta ut ord
-const words = ['pizzamjöl', 'tomatsoppa', 'chorizogryta'];
+const words = ['pizzamjöl', 'tomatsoppa', 'chorizogryta', 'tangentbord'];
 let index = getRandomIndex();
 let wordToGuess = words[index];
 
 let correctGuesses = 0;
+let guesses = [];
 let points = 0;
 let bodyParts = ['scaffold', 'head', 'body', 'arms', 'legs'];
 
@@ -68,18 +71,24 @@ function wrongGuess() {
 
 document.addEventListener('keypress', function(event) {
 
-    // Kolla om det är en bokstav?
-
     let letterExists = false;
     let guessedLetter = event.key;
-
-    for (let i = 0; i < wordToGuess.length; i++) {
-        if (guessedLetter === wordToGuess[i]) {
-            correctGuesses++;
-            rightGuess(guessedLetter, i);
-            letterExists = true;
-        } 
+    
+    if (guesses.indexOf(guessedLetter) === -1) {
+        for (let i = 0; i < wordToGuess.length; i++) {
+            if (guessedLetter === wordToGuess[i]) {
+                correctGuesses++;
+                rightGuess(guessedLetter, i);
+                letterExists = true;
+            } 
+        }
+    } else {
+        alert('Already guessed!')
+        letterExists = true;
     }
+    
+    // Lägger till bokstaven i gissningar
+    guesses.push(guessedLetter);
 
     if (!letterExists) {
         wrongGuess();
