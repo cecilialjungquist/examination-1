@@ -30,8 +30,6 @@ let approvedWordList = approvedWords(words);
 let index = getRandomIndex();
 let wordToGuess = approvedWordList[index];
 
-console.log(wordToGuess);
-
 let correctGuesses = 0;
 let guesses = [];
 let points = 0;
@@ -48,12 +46,12 @@ for (let i = 0; i < wordToGuess.length; i++) {
     ulEl.appendChild(liEl);
 }
 
-/** -.-.-.-.- FUNCTIONS -.-.-.-.- */
+/* -.-.-.-.- FUNCTIONS -.-.-.-.- */
 function approvedWords(wordList) {
     for (let i = 0; i < wordList.length; i++) {
         if (wordList[i].indexOf("-") || wordList[i].indexOf(" ")) {
             wordList.splice(i, 1);
-        } 
+        }
     }
     return wordList;
 }
@@ -84,39 +82,41 @@ document.addEventListener('keypress', function (event) {
 
     let letterExists = false;
     let guessedLetter = event.key;
+    let letterOrNumber = parseInt(event.key);
 
-    if (guesses.indexOf(guessedLetter) === -1) {
-        for (let i = 0; i < wordToGuess.length; i++) {
-            if (guessedLetter === wordToGuess[i]) {
-                correctGuesses++;
-                rightGuess(guessedLetter, i);
-                letterExists = true;
+    if (letterOrNumber / letterOrNumber != 1 || letterOrNumber === 0) {
+        if (guesses.indexOf(guessedLetter) === -1) {
+            for (let i = 0; i < wordToGuess.length; i++) {
+                if (guessedLetter === wordToGuess[i]) {
+                    correctGuesses++;
+                    rightGuess(guessedLetter, i);
+                    letterExists = true;
+                }
             }
+        } else {
+            alert('Already guessed!')
+            letterExists = true;
         }
-    } else {
-        alert('Already guessed!')
-        letterExists = true;
-    }
 
-    // Lägger till bokstaven i gissningar
-    guesses.push(guessedLetter);
+        // Lägger till bokstaven i gissningar
+        guesses.push(guessedLetter);
 
-    if (!letterExists) {
-        wrongGuess();
-        document.querySelector('.nomatch').innerHTML += event.key;
-    }
+        if (!letterExists) {
+            wrongGuess();
+            document.querySelector('.nomatch').innerHTML += event.key;
+        }
 
-    if (correctGuesses === wordToGuess.length) {
-        // Ju fler bodyParts kvar i arrayen, ju mer poäng
-        points = bodyParts.length;
-        document.querySelector('.winning').classList.add('show');
-        document.querySelector('.points').innerHTML = points;
+        if (correctGuesses === wordToGuess.length) {
+            // Ju fler bodyParts kvar i arrayen, ju mer poäng
+            points = bodyParts.length;
+            document.querySelector('.winning').classList.add('show');
+            document.querySelector('.points').innerHTML = points;
 
-    } else if (bodyParts.length === 0) {
-        document.querySelector('.game-over').classList.add('show');
-        document.querySelector('.losing-word').innerHTML = wordToGuess.toUpperCase();
-    }
-
+        } else if (bodyParts.length === 0) {
+            document.querySelector('.game-over').classList.add('show');
+            document.querySelector('.losing-word').innerHTML = wordToGuess.toUpperCase();
+        }
+    } else {}
 });
 
 restartBtnList.forEach(button => {
