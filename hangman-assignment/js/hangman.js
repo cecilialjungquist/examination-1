@@ -14,7 +14,7 @@
     .: Kolla så att det är en bokstav som skickas in
     .: Spara poäng över omgångar?
     .: Ok att samma bokstav ska kunna gissas på flera gånger?
-    .: Fixa rightGuess så den bara gör rätt grej en gång
+    .: Fixa rightGuess så den bara gör rätt grej en gång - check
     .: Förlänga ordlistan
     .: Någon typ av timer?
     .: Clean up
@@ -38,13 +38,6 @@ let restartBtnList = document.querySelectorAll('.restart-btn');
 for (let i = 0; i < wordToGuess.length; i++) {
     let liEl = document.createElement('li');
 
-    // ************************************
-    // KAN TA BORT DENNA!!!! Behövs inte då vi inte jämför längre
-    // ************************************
-
-    // Addera class för att senare kunna jämföra
-    // liEl.classList.add(wordToGuess[i]);
-    
     ulEl.appendChild(liEl);
 }
 
@@ -56,23 +49,13 @@ function getRandomIndex() {
     return randomIndex;
 }
 
-// Funktion för att jämföra bokstav och rendera UI -- fixa så det bara görs
-// en gång!
+// Funktion för att jämföra bokstav och rendera UI 
 function rightGuess(letter, placement) {
 
     // Hämta de element med class name guessedLetter
     let letterList = document.querySelectorAll('li');
 
     letterList[placement].innerHTML = letter.toUpperCase();
-
-    // ************************************
-    // KAN TA BORT DENNA!!!! Behövs inte, se ovan
-    // ************************************
-
-    // // Loopa över listan för att skriva ut på skärmen
-    // for (let i = 0; i < letterList.length; i++) {
-    //     letterList[i].innerHTML = letter.toUpperCase();
-    // }
 }
 
 // Funktion för att rendera ut UI vid felgissning
