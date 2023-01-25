@@ -3,7 +3,7 @@
 // .: Reset game option
 // .: startGame function
 // .: getPlayerInfo function
-
+// .: Uppdaterade wordList function
 
 let approvedWordList = approvedWords(words);
 let wordToGuess = '';
@@ -13,15 +13,58 @@ let guesses = [];
 let pointsPlayerOne = 0;
 let pointsPlayerTwo = 0;
 let bodyParts = ['scaffold', 'head', 'body', 'arms', 'legs'];
-let round = 1;
 let onePlayer;
 let twoPlayers;
+let round = 1;
+let roundPlayerOne = 1;
+let roundPlayerTwo = 1;
 
-// Hämta ul-elementet och restart button i dokumentet
 let ulEl = document.querySelector('.word');
 let restartBtnList = document.querySelectorAll('.restart-btn');
+let startBtn = document.getElementById('start-btn');
+let resetBtn = document.getElementById('reset-btn');
 
 /* -.-.-.-.- FUNCTIONS -.-.-.-.- */
+
+// Funktion som startar spelet
+function startGame() {
+    // Tar bort antal-spelare-vyn och lägger till "press key" text
+    document.querySelector('form').classList.remove('show');
+    document.querySelector('footer p').classList.add('show');
+    resetBtn.classList.add('show');
+
+    console.log('Spelet startar');
+
+    wordToGuess = generateWord();
+
+    // Räcker om vi hämtar den ena?
+    // const radioInputList = document.querySelectorAll('input');
+    // onePlayer = radioInputList[0].checked;
+    // twoPlayers = radioInputList[1].checked;
+
+    twoPlayers = document.getElementById('two-players').checked;
+
+    getPlayerInfo(1, pointsPlayerOne, roundPlayerOne)
+    // document.getElementById('player-turn').innerHTML = 'Player 1 - your turn!';
+    // document.getElementById('total-points').innerHTML = `Points: ${pointsPlayerOne}`;
+    // document.getElementById('rounds').innerHTML = `Round: ${roundPlayerOne}`;
+    roundPlayerOne++;
+
+    // if (onePlayer) {
+    //     console.log('en spelare vald');
+    //     return onePlayer;
+    // } else {
+    //     console.log('två spelare vald');
+    //     return twoPlayers;
+    // }
+    return twoPlayers;
+};
+
+// Funktion som skriver ut info för spelare
+function getPlayerInfo(player, playerPoints, playerRound) {
+    document.getElementById('player-info').innerHTML = `Round ${playerRound} - Player ${player}`;
+    document.getElementById('total-points').innerHTML = `Player ${player} has ${playerPoints} points`;
+}
 
 // Funktion som genererar nytt ord och nollställer
 function generateWord() {
@@ -50,10 +93,11 @@ function generateWord() {
 // Funktion som tar bort oanvändbara ord ur listan
 function approvedWords(wordList) {
     for (let i = 0; i < wordList.length; i++) {
+        wordList[i] = wordList[i].toLowerCase();
+
         if (wordList[i].includes("-") || wordList[i].includes(" ")) {
             wordList.splice(i, 1);
         } 
-        wordList[i].toLowerCase();
     }
     return wordList;
 }
@@ -77,6 +121,8 @@ function wrongGuess() {
 }
 
 /** -.-.-.-.- EVENT LISTENERS -.-.-.-.- */
+
+startBtn.addEventListener('click', startGame);
 
 document.addEventListener('keypress', function (event) {
     
@@ -129,14 +175,12 @@ document.addEventListener('keypress', function (event) {
     }
 });
 
-let roundPlayerOne = 1;
-let roundPlayerTwo = 1;
-
 restartBtnList.forEach(button => {
     button.addEventListener('click', () => {
         wordToGuess = generateWord();
         document.querySelector('.show').classList.remove('show');
 
+        // Om två spelare och det är har varit spelare två's tur
         if (twoPlayers && round % 2 === 0) {
             // document.getElementById('player-turn').innerHTML = 'Player 1 - your turn!';
             // document.getElementById('total-points').innerHTML = `Points: ${pointsPlayerOne}`;
@@ -144,6 +188,13 @@ restartBtnList.forEach(button => {
             console.log('Poäng för spelare 1 skrivs ut');
             getPlayerInfo(1, pointsPlayerOne, roundPlayerOne)
             roundPlayerOne++;
+
+        // Om en spelare
+        } else if (!twoPlayers) {
+            console.log('Poäng för spelare 1 skrivs ut');
+            getPlayerInfo(1, pointsPlayerOne, roundPlayerOne);
+        
+        // Om två spelare och det har varit spelare ett's tur
         } else {
             // document.getElementById('player-turn').innerHTML = 'Player 2 - your turn!';
             // document.getElementById('total-points').innerHTML = `Points: ${pointsPlayerTwo}`;
@@ -157,46 +208,7 @@ restartBtnList.forEach(button => {
     });
 });
 
-let startBtn = document.getElementById('start-btn');
-let resetBtn = document.getElementById('reset-btn');
-
-startBtn.addEventListener('click', startGame);
-
 resetBtn.addEventListener('dblclick', () => {
     location.reload();
 });
 
-
-function startGame() {
-    // Tar bort antal-spelare-vyn och lägger till "press key" text
-    document.querySelector('form').classList.remove('show');
-    document.querySelector('footer p').classList.add('show');
-    resetBtn.classList.add('show');
-
-    console.log('Spelet startar');
-
-    wordToGuess = generateWord();
-
-    const radioInputList = document.querySelectorAll('input');
-    onePlayer = radioInputList[0].checked;
-    twoPlayers = radioInputList[1].checked;
-
-    getPlayerInfo(1, pointsPlayerOne, roundPlayerOne)
-    // document.getElementById('player-turn').innerHTML = 'Player 1 - your turn!';
-    // document.getElementById('total-points').innerHTML = `Points: ${pointsPlayerOne}`;
-    // document.getElementById('rounds').innerHTML = `Round: ${roundPlayerOne}`;
-    roundPlayerOne++;
-
-    if (onePlayer) {
-        console.log('en spelare vald');
-        return onePlayer;
-    } else {
-        console.log('två spelare vald');
-        return twoPlayers;
-    }
-};
-
-function getPlayerInfo(player, points, playerRound) {
-    document.getElementById('player-info').innerHTML = `Round ${playerRound} - Player ${player}`;
-    document.getElementById('total-points').innerHTML = `Player ${player} has ${points} points`;
-}
