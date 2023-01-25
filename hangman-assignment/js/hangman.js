@@ -4,9 +4,10 @@ let wordToGuess = '';
 
 let correctGuesses = 0;
 let guesses = [];
-let points = 0;
+let pointsPlayerOne = 0;
+let pointsPlayerTwo = 0;
 let bodyParts = ['scaffold', 'head', 'body', 'arms', 'legs'];
-let rounds = 0;
+let round = 1;
 let onePlayer;
 let twoPlayers;
 
@@ -16,7 +17,6 @@ let restartBtnList = document.querySelectorAll('.restart-btn');
 
 // Generera startord
 wordToGuess = generateWord();
-console.log(wordToGuess);
 
 /* -.-.-.-.- FUNCTIONS -.-.-.-.- */
 
@@ -40,6 +40,7 @@ function generateWord() {
         ulEl.appendChild(liEl);
     }
 
+    console.log(word);
     return word;
 }
 
@@ -106,11 +107,13 @@ document.addEventListener('keypress', function (event) {
         
         if (correctGuesses === wordToGuess.length) {
             // Om två spelare och jämn runda
-            if (twoPlayers && rounds % 2 === 0) {
+            if (twoPlayers && round % 2 === 0) {
                 // Ju fler bodyParts kvar i arrayen, ju mer poäng
-                pointsPlayerTwo += bodyParts.length
+                pointsPlayerTwo += bodyParts.length;
+                console.log('Poäng till spelare två');
             } else {
                 pointsPlayerOne += bodyParts.length;
+                console.log('Poäng till spelare ett');
             }
             document.querySelector('.winning').classList.add('show');
             document.querySelector('.winning .right-word').innerHTML = wordToGuess.toUpperCase();
@@ -123,14 +126,29 @@ document.addEventListener('keypress', function (event) {
     }
 });
 
+let roundPlayerOne = 1;
+let roundPlayerTwo = 1;
+
 restartBtnList.forEach(button => {
     button.addEventListener('click', () => {
         wordToGuess = generateWord();
-        // Villkor för rundor här?
         document.querySelector('.show').classList.remove('show');
-        document.getElementById('total-points').innerHTML = `Your points: ${points}`;
-        rounds++;
-        document.getElementById('rounds').innerHTML = `Rounds: ${rounds}`
+
+        if (twoPlayers && round % 2 === 0) {
+            document.getElementById('player-turn').innerHTML = 'Player 2 - your turn!';
+            document.getElementById('total-points').innerHTML = `Points: ${pointsPlayerTwo}`;
+            document.getElementById('rounds').innerHTML = `Round: ${roundPlayerTwo}`;
+            console.log('Poäng för spelare 2 skrivs ut');
+            roundPlayerTwo++;
+        } else {
+            document.getElementById('player-turn').innerHTML = 'Player 1 - your turn!';
+            document.getElementById('total-points').innerHTML = `Points: ${pointsPlayerOne}`;
+            document.getElementById('rounds').innerHTML = `Round: ${roundPlayerOne}`;
+            console.log('Poäng för spelare 1 skrivs ut');
+            roundPlayerOne++;
+        }
+
+        round++;
     });
 });
 
@@ -139,19 +157,24 @@ let startBtn = document.getElementById('start-btn');
 startBtn.addEventListener('click', startGame);
 
 function startGame() {
+    console.log('Spelet startar');
+
     const radioInputList = document.querySelectorAll('input');
     onePlayer = radioInputList[0].checked;
     twoPlayers = radioInputList[1].checked;
 
+    document.getElementById('player-turn').innerHTML = 'Player 1 - your turn!';
+    document.getElementById('total-points').innerHTML = `Points: ${pointsPlayerOne}`;
+    document.getElementById('rounds').innerHTML = `Round: ${roundPlayerOne}`;
+    console.log('Poäng för spelare 1 skrivs ut');
+    roundPlayerOne++;
+
     if (onePlayer) {
-        document.getElementById('player-section').innerHTML = `Points: ${points}
-                                                                <br>Rounds: ${rounds}`;
+        console.log('en spelare vald');
         return onePlayer;
     } else {
-        document.getElementById('player-section').innerHTML = `Player 1 - your turn!
-                                                                <br>Points: ${points}`;
+        console.log('två spelare vald');
         return twoPlayers;
     }
-
     // Anropa generateWord här?
 };

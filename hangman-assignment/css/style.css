@@ -78,6 +78,11 @@ p {
     margin: 1rem 0;
 }
 
+#player-turn {
+    position: absolute;
+    top: 7%;
+    left: 10%;
+}
 #total-points {
     position: absolute;
     top: 10%;
