@@ -13,15 +13,23 @@
     <section class="game-over">
         <h1>Game over!</h1>
         <p>The word we were looking for was <b class="right-word"></b>.</p>
-        <a class="restart-btn" href="#">Restart</a>
+        <a class="restart-btn" href="#">New word</a>
     </section>
     <section class="winning">
         <h1>You guessed it!</h1>
         <p>The word we were looking for was <b class="right-word"></b>.</p>
         <p>You earned <b class="points"></b> points!</p>
-        <a class="restart-btn" href="#">Play again</a>
+        <a class="restart-btn" href="#">New word</a>
     </section>
     <main>
+        <form>
+            <input type="radio" name="player" id="one-player" checked>
+            <label for="one-player">1 player</label>
+            <input type="radio" name="player" id="two-players">
+            <label for="two-players">2 players</label>
+            <button id="start-btn">Let's play!</button>
+        </form>
+        <section id="player-section"></section>
         <figure class="">
             <svg width="501" height="565" viewBox="0 0 501 565" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <ellipse id="ground" cx="250.5" cy="536" rx="250.5" ry="29" fill="black" fill-opacity="0.06"/>

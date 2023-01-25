@@ -7,6 +7,8 @@ let guesses = [];
 let points = 0;
 let bodyParts = ['scaffold', 'head', 'body', 'arms', 'legs'];
 let rounds = 0;
+let onePlayer;
+let twoPlayers;
 
 // Hämta ul-elementet och restart button i dokumentet
 let ulEl = document.querySelector('.word');
@@ -101,10 +103,15 @@ document.addEventListener('keypress', function (event) {
             wrongGuess();
             document.querySelector('.nomatch').innerHTML += event.key;
         }
-    
+        
         if (correctGuesses === wordToGuess.length) {
-            // Ju fler bodyParts kvar i arrayen, ju mer poäng
-            points += bodyParts.length;
+            // Om två spelare och jämn runda
+            if (twoPlayers && rounds % 2 === 0) {
+                // Ju fler bodyParts kvar i arrayen, ju mer poäng
+                pointsPlayerTwo += bodyParts.length
+            } else {
+                pointsPlayerOne += bodyParts.length;
+            }
             document.querySelector('.winning').classList.add('show');
             document.querySelector('.winning .right-word').innerHTML = wordToGuess.toUpperCase();
             document.querySelector('.points').innerHTML = bodyParts.length;
@@ -112,16 +119,39 @@ document.addEventListener('keypress', function (event) {
         } else if (bodyParts.length === 0) {
             document.querySelector('.game-over').classList.add('show');
             document.querySelector('.game-over .right-word').innerHTML = wordToGuess.toUpperCase();
-        }
+        } 
     }
 });
 
 restartBtnList.forEach(button => {
     button.addEventListener('click', () => {
         wordToGuess = generateWord();
+        // Villkor för rundor här?
         document.querySelector('.show').classList.remove('show');
         document.getElementById('total-points').innerHTML = `Your points: ${points}`;
         rounds++;
         document.getElementById('rounds').innerHTML = `Rounds: ${rounds}`
     });
 });
+
+let startBtn = document.getElementById('start-btn');
+
+startBtn.addEventListener('click', startGame);
+
+function startGame() {
+    const radioInputList = document.querySelectorAll('input');
+    onePlayer = radioInputList[0].checked;
+    twoPlayers = radioInputList[1].checked;
+
+    if (onePlayer) {
+        document.getElementById('player-section').innerHTML = `Points: ${points}
+                                                                <br>Rounds: ${rounds}`;
+        return onePlayer;
+    } else {
+        document.getElementById('player-section').innerHTML = `Player 1 - your turn!
+                                                                <br>Points: ${points}`;
+        return twoPlayers;
+    }
+
+    // Anropa generateWord här?
+};
