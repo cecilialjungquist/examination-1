@@ -1,3 +1,9 @@
+// This branch:
+// .: Två spelare option
+// .: Reset game option
+// .: startGame function
+// .: getPlayerInfo function
+
 
 let approvedWordList = approvedWords(words);
 let wordToGuess = '';
@@ -14,9 +20,6 @@ let twoPlayers;
 // Hämta ul-elementet och restart button i dokumentet
 let ulEl = document.querySelector('.word');
 let restartBtnList = document.querySelectorAll('.restart-btn');
-
-// Generera startord
-wordToGuess = generateWord();
 
 /* -.-.-.-.- FUNCTIONS -.-.-.-.- */
 
@@ -135,17 +138,19 @@ restartBtnList.forEach(button => {
         document.querySelector('.show').classList.remove('show');
 
         if (twoPlayers && round % 2 === 0) {
-            document.getElementById('player-turn').innerHTML = 'Player 2 - your turn!';
-            document.getElementById('total-points').innerHTML = `Points: ${pointsPlayerTwo}`;
-            document.getElementById('rounds').innerHTML = `Round: ${roundPlayerTwo}`;
-            console.log('Poäng för spelare 2 skrivs ut');
-            roundPlayerTwo++;
-        } else {
-            document.getElementById('player-turn').innerHTML = 'Player 1 - your turn!';
-            document.getElementById('total-points').innerHTML = `Points: ${pointsPlayerOne}`;
-            document.getElementById('rounds').innerHTML = `Round: ${roundPlayerOne}`;
+            // document.getElementById('player-turn').innerHTML = 'Player 1 - your turn!';
+            // document.getElementById('total-points').innerHTML = `Points: ${pointsPlayerOne}`;
+            // document.getElementById('rounds').innerHTML = `Round: ${roundPlayerOne}`;
             console.log('Poäng för spelare 1 skrivs ut');
+            getPlayerInfo(1, pointsPlayerOne, roundPlayerOne)
             roundPlayerOne++;
+        } else {
+            // document.getElementById('player-turn').innerHTML = 'Player 2 - your turn!';
+            // document.getElementById('total-points').innerHTML = `Points: ${pointsPlayerTwo}`;
+            // document.getElementById('rounds').innerHTML = `Round: ${roundPlayerTwo}`;
+            console.log('Poäng för spelare 2 skrivs ut');
+            getPlayerInfo(2, pointsPlayerTwo, roundPlayerTwo);
+            roundPlayerTwo++;
         }
 
         round++;
@@ -153,20 +158,33 @@ restartBtnList.forEach(button => {
 });
 
 let startBtn = document.getElementById('start-btn');
+let resetBtn = document.getElementById('reset-btn');
 
 startBtn.addEventListener('click', startGame);
 
+resetBtn.addEventListener('dblclick', () => {
+    location.reload();
+});
+
+
 function startGame() {
+    // Tar bort antal-spelare-vyn och lägger till "press key" text
+    document.querySelector('form').classList.remove('show');
+    document.querySelector('footer p').classList.add('show');
+    resetBtn.classList.add('show');
+
     console.log('Spelet startar');
+
+    wordToGuess = generateWord();
 
     const radioInputList = document.querySelectorAll('input');
     onePlayer = radioInputList[0].checked;
     twoPlayers = radioInputList[1].checked;
 
-    document.getElementById('player-turn').innerHTML = 'Player 1 - your turn!';
-    document.getElementById('total-points').innerHTML = `Points: ${pointsPlayerOne}`;
-    document.getElementById('rounds').innerHTML = `Round: ${roundPlayerOne}`;
-    console.log('Poäng för spelare 1 skrivs ut');
+    getPlayerInfo(1, pointsPlayerOne, roundPlayerOne)
+    // document.getElementById('player-turn').innerHTML = 'Player 1 - your turn!';
+    // document.getElementById('total-points').innerHTML = `Points: ${pointsPlayerOne}`;
+    // document.getElementById('rounds').innerHTML = `Round: ${roundPlayerOne}`;
     roundPlayerOne++;
 
     if (onePlayer) {
@@ -176,5 +194,9 @@ function startGame() {
         console.log('två spelare vald');
         return twoPlayers;
     }
-    // Anropa generateWord här?
 };
+
+function getPlayerInfo(player, points, playerRound) {
+    document.getElementById('player-info').innerHTML = `Round ${playerRound} - Player ${player}`;
+    document.getElementById('total-points').innerHTML = `Player ${player} has ${points} points`;
+}

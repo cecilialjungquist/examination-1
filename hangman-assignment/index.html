@@ -8,9 +8,10 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <section id="player-turn"></section>
-    <section id="total-points"></section>
-    <section id="rounds"></section>
+    <section class="info">
+        <p id="player-info"></p>
+        <p id="total-points"></p>
+    </section>
     <section class="game-over">
         <h1>Game over!</h1>
         <p>The word we were looking for was <b class="right-word"></b>.</p>
@@ -23,11 +24,15 @@
         <a class="restart-btn" href="#">New word</a>
     </section>
     <main>
-        <form>
-            <input type="radio" name="player" id="one-player" checked>
-            <label for="one-player">1 player</label>
-            <input type="radio" name="player" id="two-players">
-            <label for="two-players">2 players</label>
+        <form class="show">
+            <section class="form-section">
+                <input type="radio" name="player" id="one-player" checked>
+                <label for="one-player">1 player</label>
+            </section>
+            <section class="form-section">
+                <input type="radio" name="player" id="two-players">
+                <label for="two-players">2 players</label>
+            </section>
             <button id="start-btn">Let's play!</button>
         </form>
         <figure class="">
@@ -43,7 +48,8 @@
         <footer>
             <ul class="nomatch"></ul>
             <ul class="word"></ul>
-            <p>press a key on your keyboard</p>
+            <p class="">press a key on your keyboard</p>
+            <button class="" id="reset-btn">Double click to reset game</button>
         </footer>
     </main>
     <script src="./js/words.js"></script>
