@@ -92,8 +92,9 @@ p {
 section.winning,
 section.game-over {
     position: fixed;
+    top: 0;
     width: 100vw;
-    height: 100vh;
+    min-height: 100vh;
     background: rgba(0,0,0,.9);
     z-index: 999;
     color: white;
