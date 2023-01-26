@@ -38,6 +38,10 @@ footer {
     font-size: 2rem;
 }
 
+footer p {
+    display: none;
+}
+
 footer ul.nomatch {
     display: flex;
     margin: 0;
@@ -72,22 +76,64 @@ footer ul.word li {
     background: rgba(0,0,0,.1);
 }
 
+footer button {
+    font-family: 'PT Sans', sans-serif;
+    padding: .2rem .5rem;
+    margin: 1rem auto;
+    display: none;
+}
+
 p {
     color: rgba(0,0,0,.4);
     font-size: 1.2rem;
-    margin: 1rem 0;
+    margin: 1rem auto;
 }
 
-#total-points {
+form {
+    position: absolute;
+    top: 20%;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: .6rem;
+}
+
+form input {
+    accent-color: black;
+}
+
+form section {
+    width: 6rem;
+}
+
+form #start-btn {
+    background: white;
+    color: #222;
+    font-size: 1rem;
+    text-decoration: none;
+    margin-top: 1rem;
+    padding: 1rem 2rem;
+    border-radius: .25rem;
+    opacity: .8;
+    font-family: 'PT Sans', sans-serif;
+}
+
+.info {
     position: absolute;
     top: 10%;
     left: 10%;
 }
-#rounds {
-    position: absolute;
-    top: 13%;
-    left: 10%;
+
+.info p {
+    color: rgba(0, 0, 0, 0.925);
+    font-size: 16px;
+    margin: .3rem;
 }
+
+#player-info {
+    font-weight: bold;
+}
+
 
 section.winning,
 section.game-over {
@@ -103,6 +149,10 @@ section.game-over {
     align-items: center;
     display: none;
 }
+
+form.show,
+footer p.show,
+footer button.show,
 section.winning.show,
 section.game-over.show {
     display: flex;

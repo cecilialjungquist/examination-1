@@ -1,22 +1,63 @@
+// This branch:
+// .: Två spelare option
+// .: Reset game button
+// .: startGame function
+// .: getPlayerInfo function
+// .: Uppdaterade wordList function -- MEN ska vi ha med i--?
+// .: Gjorde player till object
 
 let approvedWordList = approvedWords(words);
 let wordToGuess = '';
 
+let playerOne = {
+    id: 1,
+    points: 0,
+    round: 0,
+    isActive: true
+}
+
+let playerTwo = {
+    id: 2,
+    points: 0,
+    round: 0,
+    isActive: false
+}
+
 let correctGuesses = 0;
 let guesses = [];
-let points = 0;
 let bodyParts = ['scaffold', 'head', 'body', 'arms', 'legs'];
-let rounds = 0;
+let turns = 1;
 
-// Hämta ul-elementet och restart button i dokumentet
 let ulEl = document.querySelector('.word');
 let restartBtnList = document.querySelectorAll('.restart-btn');
-
-// Generera startord
-wordToGuess = generateWord();
-console.log(wordToGuess);
+let startBtn = document.getElementById('start-btn');
+let resetBtn = document.getElementById('reset-btn');
 
 /* -.-.-.-.- FUNCTIONS -.-.-.-.- */
+
+// Funktion som startar spelet
+function startGame() {
+    // Tar bort antal-spelare-vyn och lägger till "press key" text
+    document.querySelector('form').classList.remove('show');
+    document.querySelector('footer p').classList.add('show');
+    resetBtn.classList.add('show');
+
+    console.log('Spelet startar');
+
+    wordToGuess = generateWord();
+
+    playerTwo.isActive = document.getElementById('two-players').checked;
+    console.log('Spelare två är aktiv ' + playerTwo.isActive);
+
+    playerOne.round++;
+    getPlayerInfo(playerOne);
+};
+
+// Funktion som skriver ut info för spelare
+function getPlayerInfo(player) {
+    document.getElementById('player-info').innerHTML = `Round ${player.round} - Player ${player.id}`;
+    document.getElementById('total-points').innerHTML = `Player ${player.id} has ${player.points} points`;
+}
 
 // Funktion som genererar nytt ord och nollställer
 function generateWord() {
@@ -38,16 +79,20 @@ function generateWord() {
         ulEl.appendChild(liEl);
     }
 
+    console.log(word);
     return word;
 }
+
 
 // Funktion som tar bort oanvändbara ord ur listan
 function approvedWords(wordList) {
     for (let i = 0; i < wordList.length; i++) {
+        wordList[i] = wordList[i].toLowerCase();
+
         if (wordList[i].includes("-") || wordList[i].includes(" ")) {
             wordList.splice(i, 1);
+            i--;
         } 
-        wordList[i].toLowerCase();
     }
     return wordList;
 }
@@ -71,6 +116,8 @@ function wrongGuess() {
 }
 
 /** -.-.-.-.- EVENT LISTENERS -.-.-.-.- */
+
+startBtn.addEventListener('click', startGame);
 
 document.addEventListener('keypress', function (event) {
     
@@ -101,10 +148,17 @@ document.addEventListener('keypress', function (event) {
             wrongGuess();
             document.querySelector('.nomatch').innerHTML += event.key;
         }
-    
+        
         if (correctGuesses === wordToGuess.length) {
-            // Ju fler bodyParts kvar i arrayen, ju mer poäng
-            points += bodyParts.length;
+            // Om två spelare och jämn runda
+            if (playerTwo.isActive && turns % 2 === 0) {
+                // Ju fler bodyParts kvar i arrayen, ju mer poäng
+                playerTwo.points += bodyParts.length;
+                console.log('Poäng till spelare två');
+            } else {
+                playerOne.points += bodyParts.length;
+                console.log('Poäng till spelare ett');
+            }
             document.querySelector('.winning').classList.add('show');
             document.querySelector('.winning .right-word').innerHTML = wordToGuess.toUpperCase();
             document.querySelector('.points').innerHTML = bodyParts.length;
@@ -112,7 +166,7 @@ document.addEventListener('keypress', function (event) {
         } else if (bodyParts.length === 0) {
             document.querySelector('.game-over').classList.add('show');
             document.querySelector('.game-over .right-word').innerHTML = wordToGuess.toUpperCase();
-        }
+        } 
     }
 });
 
@@ -120,8 +174,23 @@ restartBtnList.forEach(button => {
     button.addEventListener('click', () => {
         wordToGuess = generateWord();
         document.querySelector('.show').classList.remove('show');
-        document.getElementById('total-points').innerHTML = `Your points: ${points}`;
-        rounds++;
-        document.getElementById('rounds').innerHTML = `Rounds: ${rounds}`
+        turns++;
+
+        // Om två spelare och jämn runda
+        if (playerTwo.isActive && turns % 2 === 0) {
+            playerTwo.round++;
+            console.log('Poäng för spelare 2 skrivs ut, if');
+            getPlayerInfo(playerTwo)
+        } else {
+            playerOne.round++;
+            console.log('Poäng för spelare 1 skrivs ut, else');
+            getPlayerInfo(playerOne);
+        }
+
     });
 });
+
+resetBtn.addEventListener('dblclick', () => {
+    location.reload();
+});
+
