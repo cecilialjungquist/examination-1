@@ -1,6 +1,6 @@
 // This branch:
 // .: Två spelare option
-// .: Reset game option
+// .: Reset game button
 // .: startGame function
 // .: getPlayerInfo function
 // .: Uppdaterade wordList function -- MEN ska vi ha med i--?
@@ -23,17 +23,10 @@ let playerTwo = {
     isActive: false
 }
 
-
 let correctGuesses = 0;
 let guesses = [];
-// let pointsPlayerOne = 0;
-// let pointsPlayerTwo = 0;
 let bodyParts = ['scaffold', 'head', 'body', 'arms', 'legs'];
-// let onePlayer;
-// let twoPlayers;
 let turns = 1;
-// let roundPlayerOne = 1;
-// let roundPlayerTwo = 1;
 
 let ulEl = document.querySelector('.word');
 let restartBtnList = document.querySelectorAll('.restart-btn');
@@ -53,36 +46,14 @@ function startGame() {
 
     wordToGuess = generateWord();
 
-    // Räcker om vi hämtar den ena?
-    // const radioInputList = document.querySelectorAll('input');
-    // onePlayer = radioInputList[0].checked;
-    // twoPlayers = radioInputList[1].checked;
-
-    // twoPlayers = document.getElementById('two-players').checked;
     playerTwo.isActive = document.getElementById('two-players').checked;
     console.log('Spelare två är aktiv ' + playerTwo.isActive);
 
     playerOne.round++;
-    getPlayerInfo(playerOne)
-    // document.getElementById('player-turn').innerHTML = 'Player 1 - your turn!';
-    // document.getElementById('total-points').innerHTML = `Points: ${pointsPlayerOne}`;
-    // document.getElementById('rounds').innerHTML = `Round: ${roundPlayerOne}`;
-
-    // if (onePlayer) {
-    //     console.log('en spelare vald');
-    //     return onePlayer;
-    // } else {
-    //     console.log('två spelare vald');
-    //     return twoPlayers;
-    // }
-    // return twoPlayers;
+    getPlayerInfo(playerOne);
 };
 
 // Funktion som skriver ut info för spelare
-// function getPlayerInfo(player, playerPoints, playerRound) {
-//     document.getElementById('player-info').innerHTML = `Round ${playerRound} - Player ${player}`;
-//     document.getElementById('total-points').innerHTML = `Player ${player} has ${playerPoints} points`;
-// }
 function getPlayerInfo(player) {
     document.getElementById('player-info').innerHTML = `Round ${player.round} - Player ${player.id}`;
     document.getElementById('total-points').innerHTML = `Player ${player.id} has ${player.points} points`;
@@ -112,6 +83,7 @@ function generateWord() {
     return word;
 }
 
+
 // Funktion som tar bort oanvändbara ord ur listan
 function approvedWords(wordList) {
     for (let i = 0; i < wordList.length; i++) {
@@ -119,7 +91,7 @@ function approvedWords(wordList) {
 
         if (wordList[i].includes("-") || wordList[i].includes(" ")) {
             wordList.splice(i, 1);
-            // Behöver vi lägga til i-- här?
+            i--;
         } 
     }
     return wordList;
@@ -181,11 +153,9 @@ document.addEventListener('keypress', function (event) {
             // Om två spelare och jämn runda
             if (playerTwo.isActive && turns % 2 === 0) {
                 // Ju fler bodyParts kvar i arrayen, ju mer poäng
-                // pointsPlayerTwo += bodyParts.length;
                 playerTwo.points += bodyParts.length;
                 console.log('Poäng till spelare två');
             } else {
-                // pointsPlayerOne += bodyParts.length;
                 playerOne.points += bodyParts.length;
                 console.log('Poäng till spelare ett');
             }
@@ -206,28 +176,12 @@ restartBtnList.forEach(button => {
         document.querySelector('.show').classList.remove('show');
         turns++;
 
-        // Om två spelare och det är har varit spelare två's tur
+        // Om två spelare och jämn runda
         if (playerTwo.isActive && turns % 2 === 0) {
-            // document.getElementById('player-turn').innerHTML = 'Player 1 - your turn!';
-            // document.getElementById('total-points').innerHTML = `Points: ${pointsPlayerOne}`;
-            // document.getElementById('rounds').innerHTML = `Round: ${roundPlayerOne}`;
             playerTwo.round++;
             console.log('Poäng för spelare 2 skrivs ut, if');
             getPlayerInfo(playerTwo)
-
-        // Om en spelare
-        // } else if (!playerTwo.isActive) {
-        //     console.log('Poäng för spelare 1 skrivs ut, else if');
-        //     getPlayerInfo(playerOne);
-        
-        // Om två spelare och det har varit spelare ett's tur
         } else {
-            // document.getElementById('player-turn').innerHTML = 'Player 2 - your turn!';
-            // document.getElementById('total-points').innerHTML = `Points: ${pointsPlayerTwo}`;
-            // document.getElementById('rounds').innerHTML = `Round: ${roundPlayerTwo}`;
-            // console.log('Poäng för spelare 2 skrivs ut, else');
-            // getPlayerInfo(playerTwo);
-            // playerTwo.round++;
             playerOne.round++;
             console.log('Poäng för spelare 1 skrivs ut, else');
             getPlayerInfo(playerOne);
