@@ -10,7 +10,7 @@ All JS (förutom ordlistan) är konstruerad av oss:
 * Joakim Sundman
 * Malek Mahfoudh
 
-OBS! Svenska ord och vissa av dom är väldigt svåra... Vågar du testa?
+OBS! Spelet slumpar bland 120 000 svenska ord och vissa av dom är väldigt svåra... Vågar du testa?
 
 ## Länk till diagram
 
