@@ -1,13 +1,16 @@
 # Gruppexamination för kursen JavaScript med ES6
 
-## Förutsättningar
-Klassiska hänga gubbe med HTML, CSS och JS.
+## Intro
+
+Klassisk hänga gubbe med HTML, CSS och JS.
 Majoriteten av HTML och CSS är given tillsammans med uppgiften. 
 All JS (förutom ordlistan) är konstruerad av oss:
 
 * Cecilia Ljungquist
 * Joakim Sundman
 * Malek Mahfoudh
+
+OBS! Svenska ord och vissa av dom är väldigt svåra... Vågar du testa?
 
 ## Länk till diagram
 
