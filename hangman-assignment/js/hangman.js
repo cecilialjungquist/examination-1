@@ -160,6 +160,8 @@ document.addEventListener('keypress', function (event) {
 restartBtnList.forEach(button => {
     button.addEventListener('click', () => {
         wordToGuess = generateWord();
+        console.log(wordToGuess);
+
         document.querySelector('.show').classList.remove('show');
         turns++;
 
@@ -178,4 +180,3 @@ restartBtnList.forEach(button => {
 resetBtn.addEventListener('dblclick', () => {
     location.reload();
 });
-
