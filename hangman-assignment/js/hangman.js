@@ -106,7 +106,10 @@ function wrongGuess() {
 
 /** -.-.-.-.- EVENT LISTENERS -.-.-.-.- */
 
-startBtn.addEventListener('click', startGame);
+startBtn.addEventListener('click', (event) => {
+    event.preventDefault();
+    startGame();
+});
 
 document.addEventListener('keypress', function (event) {
     
